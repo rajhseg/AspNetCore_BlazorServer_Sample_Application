@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Abc.BusinessService\Abc.BusinessService.csproj" />
+    <ProjectReference Include="..\Abc.UnitOfWorkLibrary\Abc.UnitOfWorkLibrary.csproj" />
+  </ItemGroup>
+
+</Project>

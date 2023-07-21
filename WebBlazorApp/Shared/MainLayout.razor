@@ -1,0 +1,58 @@
+﻿@using WebBlazorApp.Filters
+@inherits LayoutComponentBase
+
+@inject AuthenticationStateProvider authService;
+@inject NavigationManager navigation;
+
+<PageTitle>WebBlazorApp</PageTitle>
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            <AuthorizeView>
+                <Authorized>
+                    Hi &nbsp;<label>@UserName</label>
+                    <a @onclick="LogOut" href="javascript:void(0)">Logout</a>
+                </Authorized>
+                <NotAuthorized>
+                    <a href="/login">Login</a>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+@code{
+
+    [CascadingParameter]
+    Task<AuthenticationState> AuthenticationState { get; set; }
+
+    bool? IsAuthenticated { get; set; }
+
+    string UserName { get; set; }
+
+    protected override async Task OnInitializedAsync(){
+
+        var authState = await AuthenticationState;
+        this.IsAuthenticated = authState?.User?.Identity?.IsAuthenticated;
+        this.UserName = authState?.User?.Identity?.Name;       
+        StateHasChanged();        
+    }
+
+    async Task LogOut(){
+        BlazorAuthenticationStateProvider provider = (BlazorAuthenticationStateProvider)authService;
+
+        if(provider!=null){
+            await provider.UpdateAuthentication(null);
+            navigation.NavigateTo("/");
+        }
+    }
+}

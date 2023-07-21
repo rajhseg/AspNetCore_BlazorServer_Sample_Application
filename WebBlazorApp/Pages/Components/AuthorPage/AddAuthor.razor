@@ -1,0 +1,68 @@
+﻿
+@page "/addauthor"
+@using Abc.BusinessService
+@using Abc.UnitOfWorkLibrary
+@using WebBlazorApp.Models
+
+@inject NavigationManager navigationManager;
+@inject IUnitOfWork unitOfWork;
+@inject IAuthorService authorService;
+
+@{
+    <EditForm Model="AuthorData" method="post">		
+    <DataAnnotationsValidator />
+        <div>
+            <label>Author Name :</label>
+            <InputText @bind-Value="AuthorData.Name" />
+            <ValidationMessage For="@(()=>AuthorData.Name)" />
+        </div>
+        <br />
+        <div>
+            <button class="btn btn-primary" type="submit" @onclick="AddAuthorData">Add</button>
+            <button class="btn btn-primary" @onclick="BacktoAuthor">Back</button>
+        </div>		
+    </EditForm>
+}
+@code {
+
+	AuthorModel AuthorData { get; set; } = new AuthorModel();
+
+	private void BacktoAuthor(){
+        this.navigationManager.NavigateTo("/listauthor");
+	}
+
+	private async Task AddAuthorData(){
+		
+        if (string.IsNullOrEmpty(AuthorData.Name))
+        {
+            return;
+        }
+
+        using (var trans = await this.unitOfWork.BeginTransactionAsync())
+        {
+            try
+            {
+                List<ABC.Models.Book> _books = new List<ABC.Models.Book>();
+
+                if (AuthorData.Books != null)
+                {
+                    _books.AddRange(AuthorData.Books.Select(x => new ABC.Models.Book { AuthorId = AuthorData.Id, Title = x.Title, Description = x.Description }));
+                }
+
+                await this.authorService.AddAuthor(new ABC.Models.Author { Id = AuthorData.Id, Name = AuthorData.Name, Books = _books });
+                await this.unitOfWork.CommitTransactionAsync(trans);
+                    
+                navigationManager.NavigateTo("/listauthor");
+            }
+            catch (Exception)
+            {                    
+                await this.unitOfWork.RollbackTransactionAsync(trans);
+                throw;
+            }
+            finally
+            {
+                await trans.DisposeAsync();
+            }
+        }
+	}
+}

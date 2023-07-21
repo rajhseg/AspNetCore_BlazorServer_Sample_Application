@@ -1,0 +1,45 @@
+﻿@page "/book/AddBook"
+
+@if (Book == null)
+{
+	<p>Loading ...</p>
+}
+else{
+<h3>Add Book</h3>
+
+<EditForm method="post" Model="@Book">
+	<DataAnnotationsValidator />
+
+	<div class="mb-3">
+		<label class="form-label">Title</label>
+		<InputText @bind-Value="Book.Title" class="form-control"></InputText>
+		<ValidationMessage For="@(()=>Book.Title)"></ValidationMessage>
+	</div>
+	<div class="mb-3">
+		<label class="form-label">Description</label>
+		<input @bind-value="Book.Description" class="form-control" />
+		<ValidationMessage  For="(()=>Book.Description)"></ValidationMessage>
+	</div>
+	<div class="mb-3">
+		<label class="form-label">AuthorName</label>
+		<select @bind="Book.AuthorId" class="form-control">	
+			@if(Authors!=null){
+				foreach (var item in Authors)
+				{
+					<option value="@item.Value">@item.Text</option>
+				}
+			}
+		</select>
+		<ValidationMessage For="(()=> Book.AuthorId)"></ValidationMessage>
+	</div>
+	<br />
+	<div class="mb-3">
+		<button class="btn btn-primary" @onclick="AddAuthor">Add</button>
+		<button class="btn btn-primary" @onclick="Back">Back</button>
+	</div>
+</EditForm>
+}
+
+@code {
+
+}

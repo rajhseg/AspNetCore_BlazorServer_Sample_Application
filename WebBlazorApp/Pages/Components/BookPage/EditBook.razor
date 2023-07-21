@@ -1,0 +1,50 @@
+﻿@page "/book/edit/{id}"
+
+@attribute [Authorize(Roles ="User, Admin")]
+
+@if (Book==null){
+	<p>Loading......</p>
+}
+else{
+<h3>EditBook</h3>
+
+	<EditForm Model="@Book" method="post">
+		<DataAnnotationsValidator />
+			<div class="mb-3">
+				<label class="form-label">BookId : </label>
+				<label class="form-label">@Book.Id</label>
+			</div>
+			<div class="mb-3">
+				<label class="form-label">Title</label>
+				<InputText @bind-Value="Book.Title" class="form-control" />
+				<ValidationMessage For="@(()=>Book.Title)"></ValidationMessage>
+			</div>
+			<div class="mb-3">
+				<label class="form-label">Description</label>
+				<InputText @bind-Value="Book.Description" class="form-control" />
+				<ValidationMessage For="@(()=>Book.Description)"></ValidationMessage>
+			</div>
+			<div class="mb-3">
+				<label class="form-label">AuthorName</label>
+				<select @bind="Book.AuthorId" class="form-control">
+			   	@if(Authors!=null){
+				   foreach (var item in Authors)
+					{
+							<option value="@item.Value">@item.Text</option>
+					}				   
+			   }
+				</select>
+			</div>
+			<br />
+			<div class="mb-3">
+				<button class="btn btn-primary" type="submit" @onclick="UpdateBook">Update</button>
+				<button class="btn btn-primary" @onclick="BackToList">Back</button>
+			</div>
+	</EditForm>
+}
+
+@code {
+
+	[Parameter]
+	public string Id { get; set; }
+}

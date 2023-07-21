@@ -1,0 +1,58 @@
+﻿@page "/book"
+@{
+
+
+
+	@if (Books == null)
+	{
+		<p>Loading Books .....</p>
+	}
+	else
+	{
+		<button class="btn btn-primary" @onclick="AddBook">Add Book</button>
+
+		<br />
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">Title</th>
+					<th scope="col">Description</th>
+					<th scope="col">Author Name</th>
+					<th scope="col">Actions</th>
+				</tr>
+			</thead>
+
+			@foreach (var item in Books)
+			{
+				<tr>
+					<td>@item.Title</td>
+					<td>@item.Description</td>
+					<td>@item.AuthorName</td>
+					<td>
+						<EditForm Model="@item" style="display:inline-block">
+							<button class="btn btn-primary" @onclick="@(x=>this.EditBookData(item.Id))">Edit</button>
+						</EditForm>
+						<AuthorizeView Roles="Admin">
+							<Authorized>
+								<DeleteBook style="display:inline-block" Book="@item" DeleteCallback="DeleteData">
+									<PopupHeader>
+										<p>Delete Book</p>
+									</PopupHeader>
+									<PopupMessage>
+										<p>Do you want to remove book @item.Title</p>
+									</PopupMessage>
+								</DeleteBook>
+							</Authorized>
+						</AuthorizeView>
+					</td>
+				</tr>
+			}
+		</table>
+
+	}
+	<ModelPopup @ref="modelObj" ConfirmCallback="ModalCallbackMethod"></ModelPopup>
+}
+
+@code {
+
+}

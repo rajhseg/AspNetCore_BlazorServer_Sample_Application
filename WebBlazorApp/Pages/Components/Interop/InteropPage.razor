@@ -1,0 +1,105 @@
+﻿@page "/interop"
+@using WebBlazorApp.Models
+
+@attribute [Authorize(Roles = "User")]
+
+@inject IJSRuntime jsRuntime;
+
+@implements IAsyncDisposable
+
+@{
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<label>Call a static Method present in Csharp from Javascript</label>
+			</div>
+			<div class="col-sm-3">
+				<button onclick="callCsharpMethod()" class="btn btn-primary">Call a static Method</button>
+			</div>
+		</div>
+		<br />
+		<div class="row">
+			<div class="col-sm-6">
+				<label>Call a instance Method present in Csharp from Javascript</label>
+			</div>
+			<div class="col-sm-3">
+				<button class="btn btn-success" @onclick="CallJsMethod">Call a instance Method</button>
+			</div>
+		</div>
+		<br />
+		<div class="row">
+			<div class="col-sm-6">
+				<label>Call a instance Method present in Csharp from Javascript(load JS Dynamically)</label>
+			</div>
+			<div class="col-sm-3">
+				<button class="btn btn-primary" @onclick="CallJsMethodDynamically">Call a instance Method</button>
+			</div>
+		</div>
+		<br/>
+		<div class="row">
+			<div class="col-sm-6">
+				<label>Call a Javascript Method from Csharp</label>
+			</div>
+			<div class="col-sm-3">
+				<button class="btn btn-primary" @onclick="CallJsMethodDynamically">Call a Javascript Method</button>
+			</div>
+		</div>
+	</div>
+	<br />
+	<div class="row">
+		<b>Notification: <span class="text-success"> @this.IsNotified</span></b>
+	</div>
+
+}
+
+@code {
+
+	private IJSObjectReference jsModule;
+
+	private bool IsNotified { get; set; }
+
+	[JSInvokable]
+	public static string GetMessageFromStaticMethod2()
+	{
+		return "Hello World";
+	}
+
+	[JSInvokable]
+	public string GetMessageFromInstanceMethod()
+	{
+		this.IsNotified = !this.IsNotified;
+
+		StateHasChanged();
+
+		if (this.IsNotified)
+		{
+			return "Notification Enabled in server";
+		}
+		else
+		{
+			return "Notification disabled in server";
+		}
+	}
+
+	private async Task CallJsMethod()
+	{
+		await jsRuntime.InvokeVoidAsync("callCsharpInstanceMethod", DotNetObjectReference.Create(this));
+	}
+
+	private async Task CallJsMethodDynamically()
+	{
+		jsModule = await jsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/todo2.js");
+		AuthorModel model = new AuthorModel { Name = "Testing Author", Id = 2 };
+		await jsModule.InvokeVoidAsync("callCsharpInstanceMethod", DotNetObjectReference.Create(this), model);
+
+		//await jsModule.InvokeVoidAsync("callCsharpInstanceMethod", DotNetObjectReference.Create(this));
+	}
+
+	async ValueTask IAsyncDisposable.DisposeAsync()
+	{
+		if (jsModule != null)
+		{
+			await jsModule.DisposeAsync();
+		}
+	}
+		}

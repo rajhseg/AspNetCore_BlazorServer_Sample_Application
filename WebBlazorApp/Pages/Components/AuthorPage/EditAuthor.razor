@@ -1,0 +1,80 @@
+﻿@page "/author/edit/{Id}"
+
+@attribute [Authorize(Roles ="User")]
+
+@using Abc.BusinessService
+@using Abc.UnitOfWorkLibrary
+@using WebBlazorApp.Models
+
+@inject NavigationManager _navigationManager;
+@inject IUnitOfWork _unitOfWork;
+@inject IAuthorService _authorService;
+@inject IWebHostEnvironment _environment;
+
+
+@{
+	<div>
+			@if(AuthorData==null){
+				<p>Loading Data ....</p>
+		}
+		else{
+				<EditForm Model="@AuthorData" method="post" enctype="multipart/form-data">
+				<DataAnnotationsValidator />
+					<div class="container">
+						<div class="row">
+							<label class="col-sm-2">Author Id:</label>
+							<label class ="col-sm-4">@AuthorData.Id</label>
+						</div>
+						<div class="row">
+							<label class="col-sm-2">Author Name: </label>
+							<InputText class="col-sm-4" @bind-Value="@AuthorData.Name" />
+							<ValidationMessage For="(()=> AuthorData.Name)" ></ValidationMessage>
+						</div>
+						<div class="row">
+							<InputText @bind-Value="AuthorData.PhotoName" hidden />
+							<InputText @bind-Value="PhotoPath" hidden />
+						</div>
+
+						<br />
+					<div class="row">
+						<label class="col-sm-2 align-content-center align-content-sm-center align-middle">Photo :</label>
+						<img class="col-sm-4" src="@PhotoPath" asp-append-version="true" style="height:130px;width:150px;" />
+					</div>
+					<div class="row"><br /></div>
+					<div class="row">
+						<label class="col-form-label col-sm-2">Change Photo</label>
+						<div class="col-sm-4">
+							<div class="">
+								<InputFile id="choose-file" OnChange="@LoadImage" @bind-Value="@Photo" class="form-control" />
+							</div>
+						</div>
+						<div class="col-sm-2">							
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-2"></div>
+						<div id="img-preview" class="col-sm-2">
+						<br/>
+							<img style="height:150px;width:150px;" src="@ImgUri" />
+						</div>
+					</div>
+					<br />
+					<div>
+						<button class="btn btn-primary" @onclick="UpdateAuthor" type="submit">Update</button>
+						<button class="btn btn-primary" style="margin-left:20px;" @onclick="BackToList" type="submit">Back</button>
+					</div>	
+
+					</div>
+				</EditForm>
+		}
+	</div>
+	
+}
+
+
+@code {
+
+	[Parameter]
+	public string Id { get; set; }
+
+}

@@ -1,0 +1,150 @@
+﻿@page "/listauthor"
+
+@attribute [Authorize(Roles = "User")]
+
+@using Abc.BusinessService
+@using Abc.UnitOfWorkLibrary
+@using WebBlazorApp.Models
+
+@inject IUnitOfWork _unitOfWork;
+@inject NavigationManager _navigationManager;
+@inject IJSRuntime jsRuntime;
+
+
+@{
+
+	if (Authors == null || Authors.Count() < 1)
+	{
+		<p>Loading Data .... </p>
+	}
+	else
+	{
+		<div class="container">			
+			<div class="row">
+				<div class="col-sm-4">
+					<label>Call a instance Method present in Csharp from Javascript</label>
+				</div>
+				<div class="col-sm-3">
+					<button class="btn btn-success" @onclick="CallJsMethod">Enable/Disable Notification</button>
+				</div>
+			</div>
+			<br/>			
+			<div class="row">
+				<div class="col-sm-3">
+					<button class="btn btn-primary" @onclick="AddAuthorPage">Add Author</button>
+				</div>
+			</div>
+		</div>
+		
+		<br />
+		<br />
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">Name</th>
+					<th scope="col">Notification Status</th>
+					<th scope="col">Books List</th>
+					<th scope="col">Action</th>
+				</tr>
+			</thead>
+			@{
+				@foreach (var item in Authors)
+				{
+					<tr class="clickable" data-toggle="collapse" id="row1" data-target=".row1">
+						<td style="width:250px;">@item.Name</td>
+						<td style="width:200px;">
+							@{
+								if (IsNotified)
+								{
+									<div class="text-primary">Enabled</div>
+								}
+								else
+								{
+									<div class="text-secondary">Disabled</div>
+								}
+							}
+						</td>
+						<td style="width:400px;">
+							<div>
+								@{
+									var name = "#coll" + item.Id;
+									var nameId = "coll" + item.Id;
+								}
+								<div>
+									<button class="btn btn-success float-sm-left" type="button" data-bs-toggle="collapse"
+									@onclick="@((x)=>ExpandBook(nameId))" data-bs-target="@name" aria-expanded="false" aria-controls="collapseExample">
+										Show
+									</button>
+								</div>
+								<div class="collapse" id="@nameId">
+									<table class="table" style="width:350px;">
+										<thead>
+											<tr>
+												<th scope="col">Title</th>
+												<th scope="col">Description</th>
+											</tr>
+										</thead>
+										@foreach (var book in item.Books)
+										{
+											<tr>
+												<td>@book.Title</td>
+												<td>@book.Description</td>
+											</tr>
+										}
+									</table>
+								</div>
+							</div>
+						</td>
+						<td style="width:150px;">
+							<EditForm Model="@item" style="display:inline-block">
+								<button class="btn btn-primary" @onclick="@(x=>this.EditAuthorData(item.Id))">Edit</button>
+							</EditForm>
+							<DeleteAuthor Author="item" DeleteCallback="DeleteData" style="display:inline-block">
+								<PopupHeader>
+									<p>Delete Author</p>
+								</PopupHeader>
+								<PopupMessage>
+									<p>Do you want to remove author @item.Name</p>
+								</PopupMessage>
+							</DeleteAuthor>
+						</td>
+					</tr>
+
+				}
+			}
+		</table>
+	}
+}
+
+<ModelPopup @ref="modelObj" ConfirmCallback="ModalCallbackMethod">
+</ModelPopup>
+
+@code {
+
+	[JSInvokable]
+	public string GetMessageFromInstanceMethod()
+	{
+		this.IsNotified = !this.IsNotified;
+
+		StateHasChanged();
+
+		if (this.IsNotified)
+		{
+			return "Notification Enabled in server";
+		}
+		else
+		{
+			return "Notification disabled in server";
+		}
+	}
+
+	private async Task CallJsMethod()
+	{
+		await jsRuntime.InvokeVoidAsync("callCsharpInstanceMethod", DotNetObjectReference.Create(this));
+	}
+
+	private async void ExpandBook(string id)
+	{
+		await jsRuntime.InvokeVoidAsync("expandTable", id);
+	}
+}

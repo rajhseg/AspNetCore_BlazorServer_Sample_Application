@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Abc.AuthorLibrary\Abc.AuthorLibrary.csproj" />
+    <ProjectReference Include="..\ABC.BooksLibrary\ABC.BooksLibrary.csproj" />
+    <ProjectReference Include="..\ABC.BusinessBase\ABC.BusinessBase.csproj" />
+  </ItemGroup>
+
+</Project>

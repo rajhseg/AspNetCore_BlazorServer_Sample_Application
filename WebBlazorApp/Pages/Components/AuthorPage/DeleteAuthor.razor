@@ -1,0 +1,39 @@
+﻿@using WebBlazorApp.Models
+@attribute [Authorize(Roles ="User")]
+
+@inject IJSRuntime jsRuntime
+
+<EditForm Model="Author" method="post" @attributes="InputAttributes">
+	<button class="btn btn-primary" @onclick="DeleteItem">Delete</button>
+</EditForm>
+
+@code {
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> InputAttributes { get; set; } = new Dictionary<string, object>();
+
+    [Parameter]
+    public RenderFragment PopupMessage { get; set; }
+
+    [Parameter]
+    public RenderFragment PopupHeader { get; set; }
+
+    [Parameter]
+    public AuthorModel? Author { get; set; }
+
+    [Parameter]
+    public EventCallback<DeleteModel<AuthorModel>> DeleteCallback { get; set; }
+
+    private async Task DeleteItem() 
+    {
+        //var result = await jsRuntime.InvokeAsync<bool>("confirm", PopupMessage.ToString());
+
+        //if (result)
+        //{
+
+        DeleteCallback.InvokeAsync(new DeleteModel<AuthorModel> { Model = Author, PopupMessage = PopupMessage, PopupHeader = PopupHeader });
+
+        //}
+    }
+
+}

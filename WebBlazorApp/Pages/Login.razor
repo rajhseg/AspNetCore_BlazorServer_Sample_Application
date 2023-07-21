@@ -1,0 +1,65 @@
+﻿@page "/login"
+
+@using WebBlazorApp.Filters
+
+@inject IUserInfoService userService;
+@inject IJSRuntime jsRuntime;
+@inject AuthenticationStateProvider authProvider;
+@inject NavigationManager navigationManager;
+
+
+@code {
+
+}
+
+<EditForm Model="@UserInfoData">
+	<DataAnnotationsValidator />
+	<ValidationSummary />
+	<table class="container">
+		<tr class="row">
+			<td class="col-sm-2"><label class="form-label">UserName :</label></td>
+			<td class="col-sm-4">
+				<InputText class="form-control" @bind-Value="UserInfoData.UserName" />
+				<ValidationMessage For="(()=> UserInfoData.UserName)" />
+		    </td>			
+		</tr>
+		<br />
+		<tr class="row">
+			<td class="col-sm-2"><label class="form-label">Password :</label></td>
+			<td class="col-sm-4">
+				<InputText class="form-control" @bind-Value="UserInfoData.Password" type="password"></InputText>
+				<ValidationMessage For="(()=> UserInfoData.Password)" />
+			</td>
+
+		</tr>
+		<br/>
+		<tr class="row">
+			<td class="col-sm-2"></td>
+			<td class="col-sm-4">
+				<button type="submit" @onclick="Authenticate" class="btn btn-sm btn-success">Login</button>
+				<button type="reset" class="btn btn-sm btn-primary">Cancel</button>
+			</td>
+		</tr>
+	</table>
+</EditForm>
+
+@code {
+
+	private UserInfo UserInfoData { get; set; } = new UserInfo();
+
+
+	private async Task Authenticate()
+	{
+		var userLoginData = userService.GetUserInfo(UserInfoData.UserName);
+
+		if(userLoginData==null || userLoginData.Password != UserInfoData.Password){
+			await jsRuntime.InvokeVoidAsync("console.log", "Invalid user!");
+			return;
+		}
+
+		var _sessionData = new UserData { UserName = UserInfoData.UserName, Role = userLoginData.Role };
+		await ((BlazorAuthenticationStateProvider)authProvider).UpdateAuthentication(_sessionData);
+
+		navigationManager.NavigateTo("/");
+	}
+}
