@@ -13,3 +13,4 @@ Features implemented in this Blazor Server sample application listed below.
 9. EditForm, DataAnnotationsValidator, ValidationMessage, Bind-Value
 10. Role Based Routing and Views
 11. AuthenticationStateProvider
+12. Dynamic Import js library and execute the method from C#
