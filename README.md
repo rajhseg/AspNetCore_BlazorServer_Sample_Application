@@ -1,9 +1,16 @@
 # AspNetCore_BlazorServer_Sample_Application
-This Repo consists of basic sample for Blazor Server Application with Advance features implemented
+This Repo consists of basic sample for Blazor Server Application with Advance features implemented, this is Blazor Server side app implementation using sessionstorage
 
 Authentication Flow
 
-**Login -> token generate store in session -> BlazorAuthenticationStateProvider set AuthenticationState taken token from session -> Validation through Authorize Attribute.**
+**
+  Login 
+  
+    -> token generate store in session 
+    
+      -> BlazorAuthenticationStateProvider set AuthenticationState taken token from session 
+      
+        -> Validation through Authorize Attribute.
 
 Features implemented in this Blazor Server sample application listed below.
 1. Username, Password based Authentication.
