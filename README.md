@@ -4,13 +4,13 @@ This Repo consists of basic sample for Blazor Server Application with Advance fe
 Authentication Flow
 
 
-  -> Login 
+    -> Login 
   
-    -> token generate store in session 
+      -> token generate store in session 
     
-      -> BlazorAuthenticationStateProvider set AuthenticationState taken token from session 
+        -> BlazorAuthenticationStateProvider set AuthenticationState taken token from session 
       
-        -> Validation through Authorize Attribute.
+          -> Validation through Authorize Attribute.
 
 Features implemented in this Blazor Server sample application listed below.
 1. Username, Password based Authentication.
