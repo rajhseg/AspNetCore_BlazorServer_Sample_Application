@@ -3,8 +3,8 @@ This Repo consists of basic sample for Blazor Server Application with Advance fe
 
 Authentication Flow
 
-**
-  Login 
+
+  -> Login 
   
     -> token generate store in session 
     
