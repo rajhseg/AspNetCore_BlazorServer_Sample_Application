@@ -1,4 +1,4 @@
-﻿using ABC.Models;
+﻿using ABC.Entities;
 using System.Linq.Expressions;
 
 namespace Abc.BusinessService

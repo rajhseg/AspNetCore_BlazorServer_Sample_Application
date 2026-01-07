@@ -1,4 +1,5 @@
-﻿using ABC.Models;
+﻿using ABC.Entities;
+using ABC.Entities.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,9 +8,9 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ABC.BusinessBase
+namespace ABC.Infrastructure
 {
-    public class Repository<T> : IReposistory<T> where T : class, TEntity, new()
+    internal class Repository<T> : IReposistory<T> where T : class, TEntity, new()
     {
         protected readonly DbContext _context;
         protected readonly DbSet<T> _entity;

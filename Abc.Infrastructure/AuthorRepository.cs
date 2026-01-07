@@ -1,17 +1,14 @@
-﻿using ABC.BusinessBase;
-using ABC.Models;
+﻿using ABC.Entities;
+using ABC.Entities.Interfaces;
+using ABC.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Abc.AuthorLibrary
+namespace Abc.Infrastructure
 {
-    public class AuthorRepository : Repository<Author>, IAuthorRepository
+    internal class AuthorRepository : Repository<Author>, IAuthorRepository
     {
-        public AuthorRepository(DbContext context): base(context)
+        public AuthorRepository(DbContext context) : base(context)
         {
 
         }
@@ -38,4 +35,5 @@ namespace Abc.AuthorLibrary
             return await context.Authors.Include(x => x.Books).ToListAsync();
         }
     }
+
 }

@@ -1,6 +1,6 @@
 ﻿using Abc.BusinessService;
-using Abc.UnitOfWorkLibrary;
-using ABC.Models;
+using ABC.Entities.Interfaces;
+using ABC.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebBlazorApp.Models;
@@ -53,7 +53,7 @@ namespace WebBlazorApp.Pages.Components.BookPage
             {
                 try
                 {
-                    await this.bookService.UpdateBook(new ABC.Models.Book { Id = int.Parse(Id), Title = Book.Title, Description = Book.Description, AuthorId = Book.AuthorId });
+                    await this.bookService.UpdateBook(new ABC.Entities.Book { Id = int.Parse(Id), Title = Book.Title, Description = Book.Description, AuthorId = Book.AuthorId });
                     await this.unitOfWork.CommitTransactionAsync(transaction);
                     navigationManager.NavigateTo("/book");
                 }

@@ -1,9 +1,7 @@
-﻿using ABC.BusinessBase;
-using ABC.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace Abc.UnitOfWorkLibrary
+namespace ABC.Entities.Interfaces
 {
     public interface IUnitOfWork
     {

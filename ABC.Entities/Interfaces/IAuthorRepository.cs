@@ -1,7 +1,5 @@
-﻿using ABC.BusinessBase;
-using ABC.Models;
-
-namespace Abc.AuthorLibrary
+﻿
+namespace ABC.Entities.Interfaces
 {
     public interface IAuthorRepository : IReposistory<Author>
     {

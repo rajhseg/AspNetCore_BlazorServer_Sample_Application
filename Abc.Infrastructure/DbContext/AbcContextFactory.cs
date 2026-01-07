@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace ABC.BusinessBase;
+namespace Abc.Infrastructure;
 
-public class AbcContextFactory : IDesignTimeDbContextFactory<AbcContext>
+internal class AbcContextFactory : IDesignTimeDbContextFactory<AbcContext>
 {
     public AbcContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<AbcContext>();
-        optionsBuilder.UseSqlServer<AbcContext>("server=systemname\\sql;database=test;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=true");
+        optionsBuilder.UseSqlServer<AbcContext>("server=sysname\\sql;database=test;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=true");
         return new AbcContext(optionsBuilder.Options);
     }
 }

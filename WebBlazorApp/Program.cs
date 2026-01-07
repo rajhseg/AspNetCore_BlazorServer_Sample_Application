@@ -1,8 +1,5 @@
-using Abc.AuthorLibrary;
-using ABC.BooksLibrary;
-using ABC.BusinessBase;
 using Abc.BusinessService;
-using Abc.UnitOfWorkLibrary;
+using ABC.Entities.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
@@ -10,6 +7,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
 using WebBlazorApp.Data;
 using WebBlazorApp.Filters;
+using Abc.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,16 +20,8 @@ builder.Services.AddScoped<ProtectedSessionStorage>();
 builder.Services.AddScoped<AuthenticationStateProvider, BlazorAuthenticationStateProvider>();
 builder.Services.AddSingleton<IUserInfoService, UserInfoService>();
 
-builder.Services.AddDbContext<DbContext, AbcContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("sql"),
-                                                    x => x.MigrationsAssembly("ABC.BusinessBase")),
-                                                    contextLifetime: ServiceLifetime.Scoped);
-
-builder.Services.AddSingleton<IAuthorRepository, AuthorRepository>();
-builder.Services.AddSingleton<IBooksRepository, BookRepository>();
-builder.Services.AddSingleton<IUnitOfWork, UnitOfWork>();
-
-builder.Services.AddTransient<IAuthorService, AuthorService>();
-builder.Services.AddTransient<IBookService, BookService>();
+builder.Services.RegisterRepositories(builder.Configuration.GetConnectionString("sql"));
+builder.Services.RegisterBusinessService();
 
 builder.Services.AddSingleton<WeatherForecastService>();
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ABC.Models
+namespace ABC.Entities
 {
     public interface TEntity
     {

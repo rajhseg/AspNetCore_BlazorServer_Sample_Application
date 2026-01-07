@@ -1,7 +1,7 @@
 ﻿
 @page "/addauthor"
 @using Abc.BusinessService
-@using Abc.UnitOfWorkLibrary
+@using ABC.Entities.Interfaces;
 @using WebBlazorApp.Models
 
 @inject NavigationManager navigationManager;
@@ -42,14 +42,14 @@
         {
             try
             {
-                List<ABC.Models.Book> _books = new List<ABC.Models.Book>();
+                List<ABC.Entities.Book> _books = new List<ABC.Entities.Book>();
 
                 if (AuthorData.Books != null)
                 {
-                    _books.AddRange(AuthorData.Books.Select(x => new ABC.Models.Book { AuthorId = AuthorData.Id, Title = x.Title, Description = x.Description }));
+                    _books.AddRange(AuthorData.Books.Select(x => new ABC.Entities.Book { AuthorId = AuthorData.Id, Title = x.Title, Description = x.Description }));
                 }
 
-                await this.authorService.AddAuthor(new ABC.Models.Author { Id = AuthorData.Id, Name = AuthorData.Name, Books = _books });
+                await this.authorService.AddAuthor(new ABC.Entities.Author { Id = AuthorData.Id, Name = AuthorData.Name, Books = _books });
                 await this.unitOfWork.CommitTransactionAsync(trans);
                     
                 navigationManager.NavigateTo("/listauthor");

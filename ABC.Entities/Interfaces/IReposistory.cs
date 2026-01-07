@@ -1,7 +1,6 @@
-﻿using ABC.Models;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
-namespace ABC.BusinessBase
+namespace ABC.Entities.Interfaces
 {
     public interface IReposistory<T> where T : class, TEntity
     {

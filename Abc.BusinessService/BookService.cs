@@ -1,5 +1,5 @@
-﻿using ABC.BooksLibrary;
-using ABC.Models;
+﻿using ABC.Entities;
+using ABC.Entities.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Abc.BusinessService
 {
-    public class BookService : IBookService
+    internal class BookService : IBookService
     {
         private readonly IBooksRepository _booksRepository;
 
@@ -44,7 +44,7 @@ namespace Abc.BusinessService
 
         public async Task<IEnumerable<Book>> GetBooks(Expression<Func<Book, bool>> predicate)
         {
-            return await this._booksRepository.GetData(predicate);
+            return await this._booksRepository.GetAllWithAuthors(predicate);
         }
 
         public async Task<Book> UpdateBook(Book book)
@@ -64,5 +64,6 @@ namespace Abc.BusinessService
 
             return await this._booksRepository.Update(_dbBook);
         }
+
     }
 }

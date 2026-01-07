@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ABC.Models
+namespace ABC.Entities
 {
     public class Author : TEntity
     {
@@ -16,6 +16,8 @@ namespace ABC.Models
         public string Name { get; set; }
 
         public string PhotoName { get; set; }
+
+        public string PhotoContent { get; set; }
 
         public virtual ICollection<Book> Books { get; set; }
     }

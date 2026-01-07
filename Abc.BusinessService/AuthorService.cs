@@ -1,15 +1,10 @@
-﻿using Abc.AuthorLibrary;
-using ABC.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using ABC.Entities;
+using ABC.Entities.Interfaces;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Abc.BusinessService
 {
-    public class AuthorService : IAuthorService
+    internal class AuthorService : IAuthorService
     {
         private readonly IAuthorRepository _authorRepository;
 
@@ -60,7 +55,7 @@ namespace Abc.BusinessService
 
             _dbAuthor.Name = author.Name;            
             _dbAuthor.PhotoName = author.PhotoName;
-
+            _dbAuthor.PhotoContent = author.PhotoContent;
             return await this._authorRepository.Update(_dbAuthor);
         }
     }

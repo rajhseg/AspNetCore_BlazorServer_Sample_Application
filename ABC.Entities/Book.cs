@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ABC.Models
+namespace ABC.Entities
 {
     public class Book : TEntity
     {

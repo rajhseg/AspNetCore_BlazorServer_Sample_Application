@@ -1,17 +1,17 @@
-﻿using ABC.BusinessBase;
-using ABC.Models;
+﻿using ABC.Entities;
+using ABC.Entities.Interfaces;
+using ABC.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace ABC.BooksLibrary
+namespace Abc.Infrastructure
 {
-    public class BookRepository : Repository<Book>, IBooksRepository 
+    internal class BookRepository : Repository<Book>, IBooksRepository
     {
-        public BookRepository(DbContext context): base(context)
+        public BookRepository(DbContext context) : base(context)
         {
 
         }
@@ -19,7 +19,7 @@ namespace ABC.BooksLibrary
         public async Task updateDescriptionAsync(int id, string description)
         {
             var data = await GetById(id);
-            if(data != null)
+            if (data != null)
             {
                 data.Description = description;
                 await Update(data);
@@ -31,11 +31,21 @@ namespace ABC.BooksLibrary
         public async Task<IEnumerable<Book>> GetAllWithAuthors()
         {
             AbcContext? context = this._context as AbcContext;
-            
-            if(context==null)
+
+            if (context == null)
                 return Enumerable.Empty<Book>();
 
             return await context.Books.Include(x => x.Author).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Book>> GetAllWithAuthors(Expression<Func<Book, bool>> predicate)
+        {
+            AbcContext? context = this._context as AbcContext;
+
+            if (context == null)
+                return Enumerable.Empty<Book>();
+
+            return await context.Books.Include(x => x.Author).Where(predicate).ToListAsync();
         }
     }
 }

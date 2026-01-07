@@ -1,18 +1,17 @@
-﻿using Abc.AuthorLibrary;
-using ABC.BooksLibrary;
-using ABC.BusinessBase;
-using ABC.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage;
+using ABC.Entities.Interfaces;
+using ABC.Entities;
+using ABC.Infrastructure;
 
-namespace Abc.UnitOfWorkLibrary
+namespace Abc.Infrastructure
 {
-    public class UnitOfWork : IUnitOfWork
+    internal class UnitOfWork : IUnitOfWork
     {
 
         private readonly DbContext _context;

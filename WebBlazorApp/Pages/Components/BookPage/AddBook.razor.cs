@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using WebBlazorApp.Models;
 using Abc.BusinessService;
-using Abc.UnitOfWorkLibrary;
+using ABC.Entities.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Authorization;
-using ABC.Models;
+using ABC.Entities;
 
 namespace WebBlazorApp.Pages.Components.BookPage
 {
@@ -51,7 +51,7 @@ namespace WebBlazorApp.Pages.Components.BookPage
                 {
                     try
                     {
-                        await this.bookService.AddBook(new ABC.Models.Book { Title = Book.Title, Description = Book.Description, AuthorId = Book.AuthorId });
+                        await this.bookService.AddBook(new ABC.Entities.Book { Title = Book.Title, Description = Book.Description, AuthorId = Book.AuthorId });
                         await this.unitOfWork.CommitTransactionAsync(trans);
                         navigationManager.NavigateTo("/book");
                     }

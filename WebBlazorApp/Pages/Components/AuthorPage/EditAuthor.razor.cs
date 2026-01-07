@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 using WebBlazorApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using System;
-using Abc.UnitOfWorkLibrary;
+using ABC.Entities.Interfaces;
 using Abc.BusinessService;
 
 namespace WebBlazorApp.Pages.Components.AuthorPage
@@ -62,7 +62,7 @@ namespace WebBlazorApp.Pages.Components.AuthorPage
                 try
                 {
                     var photo_name = await processUploadFile();
-                    await this._authorService.UpdateAuthor(new ABC.Models.Author { Id = AuthorData.Id, Name = AuthorData.Name, PhotoName = photo_name });
+                    await this._authorService.UpdateAuthor(new ABC.Entities.Author { Id = AuthorData.Id, Name = AuthorData.Name, PhotoName = photo_name });
                     await this._unitOfWork.CommitTransactionAsync(trans);
                     _navigationManager.NavigateTo("/listauthor");
                 }
