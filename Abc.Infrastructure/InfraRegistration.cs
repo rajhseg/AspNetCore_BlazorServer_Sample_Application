@@ -18,10 +18,10 @@ namespace Abc.Infrastructure
                                                                 x => x.MigrationsAssembly("ABC.Infrastructure")),
                                                                 contextLifetime: ServiceLifetime.Scoped);
 
-            service.AddSingleton<IAuthorRepository, AuthorRepository>();
-            service.AddSingleton<IBooksRepository, BookRepository>();
-            service.AddSingleton<ITokenRepository, TokenRepository>();
-            service.AddSingleton<IUnitOfWork, UnitOfWork>();
+            service.AddScoped<IAuthorRepository, AuthorRepository>();
+            service.AddScoped<IBooksRepository, BookRepository>();
+            service.AddScoped<ITokenRepository, TokenRepository>();
+            service.AddScoped<IUnitOfWork, UnitOfWork>();
         }
     }
 }
