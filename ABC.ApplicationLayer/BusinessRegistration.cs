@@ -9,7 +9,7 @@ namespace Abc.BusinessService
 {
     public static class BusinessRegistration
     {
-        public static void RegisterBusinessService(this IServiceCollection service) 
+        public static void RegisterApplicationLayer(this IServiceCollection service) 
         {
             service.AddTransient<IAuthorService, AuthorService>();
             service.AddTransient<IBookService, BookService>();

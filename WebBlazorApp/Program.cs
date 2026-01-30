@@ -20,8 +20,8 @@ builder.Services.AddScoped<ProtectedSessionStorage>();
 builder.Services.AddScoped<AuthenticationStateProvider, BlazorAuthenticationStateProvider>();
 builder.Services.AddSingleton<IUserInfoService, UserInfoService>();
 
-builder.Services.RegisterRepositories(builder.Configuration.GetConnectionString("sql"));
-builder.Services.RegisterBusinessService();
+builder.Services.RegisterApplicationLayer();
+builder.Services.RegisterInfrastructure(builder.Configuration);
 
 builder.Services.AddSingleton<WeatherForecastService>();
 

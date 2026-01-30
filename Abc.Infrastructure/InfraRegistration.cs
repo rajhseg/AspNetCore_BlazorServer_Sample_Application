@@ -11,10 +11,10 @@ namespace Abc.Infrastructure
     /* Composition Root */
     public static class InfraRegistration
     {
-        public static void RegisterRepositories(this IServiceCollection service, string connectionString) 
+        public static void RegisterInfrastructure(this IServiceCollection service, ConfigurationManager configuration) 
         {
                 
-            service.AddDbContext<DbContext, AbcContext>(options => options.UseSqlServer(connectionString,
+            service.AddDbContext<DbContext, AbcContext>(options => options.UseSqlServer(configuration.GetConnectionString("sql"),
                                                                 x => x.MigrationsAssembly("ABC.Infrastructure")),
                                                                 contextLifetime: ServiceLifetime.Scoped);
 
